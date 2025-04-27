@@ -19,13 +19,13 @@ public class AuthController {
     @Autowired
     private IUserService userService;
 
-    @PostMapping("/register")
+    @PostMapping("/register") // Test successful
     public ResponseEntity<Response> register (@Valid @RequestBody RegisterRequest registerRequest) {
         Response response = userService.register(registerRequest);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login") // Test successful
     public ResponseEntity<Response> login (@Valid @RequestBody LoginRequest loginRequest){
         Response response = userService.login(loginRequest);
         return ResponseEntity.status(response.getStatusCode()).body(response);

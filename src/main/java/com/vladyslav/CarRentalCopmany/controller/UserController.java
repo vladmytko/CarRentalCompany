@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/users")
@@ -26,28 +27,28 @@ public class UserController {
     @Autowired
     private JWTUtils jwtUtils;
 
-    @GetMapping("get-user-by-id/{userId}")
+    @GetMapping("get-user-by-id/{userId}") // Test successful
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> getPatientById(@PathVariable Long userId){
         Response response = userService.getUserById(userId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @GetMapping("get-user-by-email/{email}")
+    @GetMapping("get-user-by-email/{email}") // Test successful
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> getPatientByEmail(@PathVariable String email){
         Response response = userService.getUserByEmail(email);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @GetMapping("get-user-by-name/{name}")
+    @GetMapping("get-user-by-name/{name}")  // Test successful, but needs full name(make this user search easier)
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> getPatientByName(@PathVariable String name){
         Response response = userService.getUserByName(name);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @GetMapping("get-all-users")
+    @GetMapping("get-all-users")// Test successful, should not return admin entity
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> getAllUsers(){
         Response response = userService.getAllUsers();
@@ -68,20 +69,24 @@ public class UserController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @GetMapping("get-user-info/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Response> getMyInfo(@PathVariable String email){
-        Response response = userService.getMyInfo(email);
-        return ResponseEntity.status(response.getStatusCode()).body(response);
-    }
+//    @GetMapping("get-user-info/{userId}")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+//    public ResponseEntity<Response> getMyInfo(@PathVariable String email){
+//        Response response = userService.getMyInfo(email);
+//        return ResponseEntity.status(response.getStatusCode()).body(response);
+//    }
 
-    @PatchMapping("update-self-user/{userId}")
+    @PatchMapping("update-self-user") // Test successful
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Response> updateSelfUser(@RequestBody Map<String,String> requestBody){
 
         // Get patient ID automatically from the JWT token
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String jwt = ((UsernamePasswordAuthenticationToken) authentication).getCredentials().toString();
+        Object credentials = ((UsernamePasswordAuthenticationToken) authentication).getCredentials();
+        if(credentials == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response(401, "Unauthorised: Missing token"));
+        }
+        String jwt = credentials.toString();
         Long userId = jwtUtils.extractUserId(jwt);
 
         if(userId == null){
@@ -107,7 +112,7 @@ public class UserController {
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @PatchMapping("update-user-by-id/{userId}")
+    @PatchMapping("update-user-by-id/{userId}") // Test successful
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> updateUserById(@PathVariable Long userId,
                                                    @RequestBody Map<String,String> requestBody){

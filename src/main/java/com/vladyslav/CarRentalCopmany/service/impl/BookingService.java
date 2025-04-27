@@ -16,6 +16,7 @@ import com.vladyslav.CarRentalCopmany.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,10 +38,11 @@ public class BookingService implements IBookingService {
 
         try{
             if(bookingRequest.getCheckOutDate().isBefore(bookingRequest.getCheckInDate())){
-                throw new IllegalArgumentException("Check in date must be after check out date");
+                throw new IllegalArgumentException("Check-out date must be after check-in date");
             }
 
             Car car = carRepository.findById(carId).orElseThrow(()-> new OurException("Car Not Found"));
+
             User user = userRepository.findById(userId).orElseThrow(()-> new OurException("User Not Found"));
 
             List<Booking> existingBooking = car.getBookings();
@@ -48,10 +50,16 @@ public class BookingService implements IBookingService {
                 throw new OurException("Car is not available for selected date range");
             }
 
-            car.setCarAvailability(AvailabilityStatus.RENTED);
-
             bookingRequest.setCar(car);
             bookingRequest.setUser(user);
+            bookingRequest.setTotalNumOfPeople();
+            bookingRequest.setTotalPrice();
+
+            Integer totalNumberOfPeople = bookingRequest.getTotalNumOfPeople();
+
+            if(totalNumberOfPeople > car.getNumberOfSeats()){
+                throw new OurException("Not enough seats for " + totalNumberOfPeople + " people");
+            }
 
             String bookingConfirmationCode = Utils.generateRandomConfirmationCode(10);
             bookingRequest.setBookingConfirmationCode(bookingConfirmationCode);
@@ -245,8 +253,9 @@ public class BookingService implements IBookingService {
     private boolean carIsAvailable(Booking bookingRequest, List<Booking> existingBookings) {
         return existingBookings.stream()
                 .noneMatch(existingBooking ->
-                        bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckOutDate()) &&
-                                bookingRequest.getCheckOutDate().isAfter(existingBooking.getCheckInDate())
+                        bookingRequest.getCheckInDate().isBefore(existingBooking.getCheckOutDate().plusDays(1)) &&
+                                bookingRequest.getCheckOutDate().isAfter(existingBooking.getCheckInDate().minusDays(1))
                 );
     }
+
 }

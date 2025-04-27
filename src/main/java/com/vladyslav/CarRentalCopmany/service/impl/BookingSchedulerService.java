@@ -16,8 +16,6 @@ import java.util.List;
  * This service contains scheduled tasks related to bookings,
  * such as updating car availability status after bookings end.
  */
-
-// NEEDS UPDATE
 @Service
 public class BookingSchedulerService {
 
@@ -25,24 +23,20 @@ public class BookingSchedulerService {
     private BookingRepository bookingRepository;
 
     @Autowired
-    private CarRepository carRepository;
+    public CarRepository carRepository;
 
     /**
      * Scheduled task that runs daily at 2:00AM to update the availability status of cars.
-     * If a car has no future bookings after a completed booking, its status is set to AVAILABLE.
+     * If a car has an active booking today, its status is set to RENTED.
+     * Otherwise, it is set to AVAILABLE.
      */
     @Scheduled(cron = "0 0 2 * * ?") // Runs daily at 2:00AM
-    public void updateCarAvailability() {
+    public void updateAllCarAvailability() {
         try {
-            // Find bookings that have already ended (check-out date before today)
-            List<Booking> completedBookings = bookingRepository.findAllByCheckOutDateBefore(LocalDate.now());
+            List<Car> cars = carRepository.findAll();
 
-            for (Booking booking : completedBookings) {
-                Car car = booking.getCar();
-
-                // Mark the car as available after current booking ends, regardless of future bookings
-                car.setCarAvailability(AvailabilityStatus.AVAILABLE);
-                carRepository.save(car);
+            for (Car car : cars) {
+                updateCarAvailabilityBasedOnBookings(car);
             }
 
             System.out.println("Car availability update completed successfully");
@@ -50,5 +44,22 @@ public class BookingSchedulerService {
             System.err.println("Failed to update car availability: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Updates the availability status of a given car based on today's date and its bookings.
+     * @param car the car whose availability is to be updated
+     */
+    public void updateCarAvailabilityBasedOnBookings(Car car) {
+        LocalDate today = LocalDate.now();
+
+        boolean isCurrentlyRented = car.getBookings().stream()
+                .anyMatch(booking ->
+                        (today.isEqual(booking.getCheckInDate()) || today.isAfter(booking.getCheckInDate())) &&
+                        today.isBefore(booking.getCheckOutDate().plusDays(1))
+                );
+
+        car.setCarAvailability(isCurrentlyRented ? AvailabilityStatus.RENTED : AvailabilityStatus.AVAILABLE);
+        carRepository.save(car);
     }
 }

@@ -68,6 +68,8 @@ public class Utils {
         bookingDTO.setNumOfAdults(booking.getNumOfAdults());
         bookingDTO.setNumOfChildren(booking.getNumOfChildren());
         bookingDTO.setTotalNumberOfPeople(booking.getTotalNumOfPeople());
+        bookingDTO.setTotalPrice(booking.getTotalPrice());
+
 
         return bookingDTO;
     }

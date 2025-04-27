@@ -1,5 +1,7 @@
 package com.vladyslav.CarRentalCopmany.dto.requests;
 
+import com.vladyslav.CarRentalCopmany.entity.enums.Role;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +29,9 @@ public class RegisterRequest {
 
     @NotNull(message = "Date of birth is required")
     private LocalDate dateOfBirth;
+
+    @NotNull(message = "Role is required")
+    private Role role = Role.USER;
 
 
     // GETTERS AND SETTERS
@@ -70,5 +75,12 @@ public class RegisterRequest {
 
     public void setDateOfBirth(@NotNull(message = "Date of birth is required") LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+    public @NotNull(message = "Role is required") Role getRole() {
+        return role;
+    }
+
+    public void setRole(@NotNull(message = "Role is required") Role role) {
+        this.role = role;
     }
 }

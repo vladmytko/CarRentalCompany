@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @Entity
@@ -25,12 +27,16 @@ public class Booking {
     private LocalDate checkOutDate;
 
     @Min(value = 1, message = "Number of adults must not be less that 1")
-    private int numOfAdults;
+    private Integer numOfAdults;
 
     @Min(value = 0, message = "Number of children must not be less that 0")
-    private int numOfChildren;
+    private Integer numOfChildren;
 
-    private int totalNumOfPeople;
+    @Min(value = 1, message = "Number of total people in a car must not be less that 1")
+    private Integer totalNumOfPeople;
+
+    @Min(value = 0, message = "Number of total price must not be less that 0")
+    private BigDecimal totalPrice;
 
     private String bookingConfirmationCode;
 
@@ -69,31 +75,40 @@ public class Booking {
         this.checkOutDate = checkOutDate;
     }
 
-    @Min(value = 1, message = "Number of adults must not be less that 1")
-    public int getNumOfAdults() {
+    public @Min(value = 1, message = "Number of adults must not be less that 1") Integer getNumOfAdults() {
         return numOfAdults;
     }
 
-    public void setNumOfAdults(@Min(value = 1, message = "Number of adults must not be less that 1") int numOfAdults) {
+    public void setNumOfAdults(@Min(value = 1, message = "Number of adults must not be less that 1") Integer numOfAdults) {
         this.numOfAdults = numOfAdults;
     }
 
-    @Min(value = 0, message = "Number of children must not be less that 0")
-    public int getNumOfChildren() {
+    public @Min(value = 0, message = "Number of children must not be less that 0") Integer getNumOfChildren() {
         return numOfChildren;
     }
 
-    public void setNumOfChildren(@Min(value = 0, message = "Number of children must not be less that 0") int numOfChildren) {
+    public void setNumOfChildren(@Min(value = 0, message = "Number of children must not be less that 0") Integer numOfChildren) {
         this.numOfChildren = numOfChildren;
     }
 
-    public int getTotalNumOfPeople() {
+    public Integer getTotalNumOfPeople() {
         return totalNumOfPeople;
     }
 
-    public void setTotalNumOfPeople(int totalNumOfPeople) {
-        this.totalNumOfPeople = totalNumOfPeople;
+    public void setTotalNumOfPeople() {
+        this.totalNumOfPeople = this.numOfAdults + this.numOfChildren;
     }
+
+    public @Min(value = 0, message = "Number of total price must not be less that 0") BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice() {
+        long numberOfDays = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+        this.totalPrice = car.getCarPrice().multiply(BigDecimal.valueOf(numberOfDays));
+    }
+
+
 
     public String getBookingConfirmationCode() {
         return bookingConfirmationCode;
@@ -117,24 +132,5 @@ public class Booking {
 
     public void setCar(Car car) {
         this.car = car;
-    }
-
-    public void calculateTotalNumberOfGuests(){
-        this.totalNumOfPeople = this.numOfAdults + this.numOfChildren;
-    }
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", checkInDate=" + checkInDate +
-                ", checkOutDate=" + checkOutDate +
-                ", numOfAdults=" + numOfAdults +
-                ", numOfChildren=" + numOfChildren +
-                ", totalNumOfPeople=" + totalNumOfPeople +
-                ", bookingConfirmationCode='" + bookingConfirmationCode + '\'' +
-                ", user=" + user +
-                ", car=" + car +
-                '}';
     }
 }

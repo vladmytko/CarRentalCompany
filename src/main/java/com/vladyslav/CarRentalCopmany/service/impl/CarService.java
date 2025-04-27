@@ -23,6 +23,7 @@ import java.util.List;
 @Service
 public class CarService implements ICarService {
 
+
    @Autowired
    private CarRepository carRepository;
 
@@ -37,6 +38,12 @@ public class CarService implements ICarService {
         Response response = new Response();
 
         try{
+
+            // Check if car exist
+            if(carRepository.existsByRegistrationNumber(request.getRegistrationNumber())){
+                throw new OurException(request.getRegistrationNumber() + " already exists");
+            }
+
             String imageUrl = awsS3Service.saveImageToS3(request.getPhoto());
 
             Car car = new Car();
@@ -111,6 +118,11 @@ public class CarService implements ICarService {
         Response response = new Response();
 
         try{
+
+            if (carId == null) {
+                throw new OurException("Car ID must not be null");
+            }
+
             carRepository.findById(carId).orElseThrow(()->new OurException("Car Not Found"));
             carRepository.deleteById(carId);
             // Set success response

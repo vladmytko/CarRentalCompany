@@ -1,10 +1,12 @@
 package com.vladyslav.CarRentalCopmany.entity;
 
+import com.vladyslav.CarRentalCopmany.entity.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
@@ -37,13 +39,23 @@ public class User implements UserDetails {
     @NotBlank(message = "Password is required")
     private String password;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Role is required")
+    private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Booking> bookings = new ArrayList<>();
 
     // GETTERS AND SETTERS
 
+
+    public @NotBlank(message = "Phone number is required") String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(@NotBlank(message = "Phone number is required") String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public Long getId() {
         return id;
@@ -69,27 +81,59 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public @NotBlank(message = "Phone number is required") String getPhoneNumber() {
-        return phoneNumber;
+    public @NotNull(message = "Date of birth is required") LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setPhoneNumber(@NotBlank(message = "Phone number is required") String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setDateOfBirth(@NotNull(message = "Date of birth is required") LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    // USER DETAILS METHODS]
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
 
     public @NotBlank(message = "Password is required") String getPassword() {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setPassword(@NotBlank(message = "Password is required") String password) {
         this.password = password;
     }
 
-    public String getRole() {
+    public @NotNull(message = "Role is required") Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(@NotNull(message = "Role is required") Role role) {
         this.role = role;
     }
 
@@ -101,42 +145,5 @@ public class User implements UserDetails {
         this.bookings = bookings;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
 
-    @Override
-    public String getUsername() {
-        return "";
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
-
-
-    public @NotNull(message = "Date of birth is required") LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(@NotNull(message = "Date of birth is required") LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
 }

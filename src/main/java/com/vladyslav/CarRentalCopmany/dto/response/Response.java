@@ -6,6 +6,7 @@ import com.vladyslav.CarRentalCopmany.dto.CarDTO;
 import com.vladyslav.CarRentalCopmany.dto.UserDTO;
 import com.vladyslav.CarRentalCopmany.dto.VanDTO;
 
+import com.vladyslav.CarRentalCopmany.entity.enums.Role;
 import lombok.Data;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class Response {
     private String message;
 
     private String token;
-    private String role;
+    private Role role;
     private String expirationTime;
     private String bookingConfirmationCode;
 
@@ -66,11 +67,11 @@ public class Response {
         this.token = token;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

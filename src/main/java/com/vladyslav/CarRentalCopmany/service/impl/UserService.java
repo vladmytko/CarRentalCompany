@@ -6,6 +6,7 @@ import com.vladyslav.CarRentalCopmany.dto.requests.RegisterRequest;
 import com.vladyslav.CarRentalCopmany.dto.response.Response;
 import com.vladyslav.CarRentalCopmany.entity.Booking;
 import com.vladyslav.CarRentalCopmany.entity.User;
+import com.vladyslav.CarRentalCopmany.entity.enums.Role;
 import com.vladyslav.CarRentalCopmany.exception.OurException;
 import com.vladyslav.CarRentalCopmany.repo.BookingRepository;
 import com.vladyslav.CarRentalCopmany.repo.UserRepository;
@@ -22,7 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class UserService implements IUserService {
+public class    UserService implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -58,7 +59,7 @@ public class UserService implements IUserService {
            user.setName(registerRequest.getName());
            user.setPhoneNumber(registerRequest.getPhoneNumber());
            user.setDateOfBirth(registerRequest.getDateOfBirth());
-           user.setRole("USER");
+           user.setRole(registerRequest.getRole());
            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
 
@@ -72,6 +73,8 @@ public class UserService implements IUserService {
            response.setStatusCode(200);
            response.setMessage("Patient registered successfully");
            response.setUser(userDTO);
+
+           System.out.println("Registering user with role: " + registerRequest.getRole());
 
        } catch (OurException e) {
 

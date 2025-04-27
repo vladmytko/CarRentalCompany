@@ -30,7 +30,7 @@ public class SecurityConfig {
     private JWTAuthFilter jwtAuthFilter;
 
     @Bean
-    public SecurityFilterChain sucurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request

@@ -24,6 +24,11 @@ public class BookingController {
     @Autowired
     private JWTUtils jwtUtils;
 
+
+    // Test successful
+    // Range of validation implemented.
+    // Can not
+
     @PostMapping("/book-car/{carId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<Response> saveBooking(@PathVariable Long carId,

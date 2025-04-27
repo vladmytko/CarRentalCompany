@@ -67,4 +67,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
             @Param("numberOfSeats") Integer numberOfSeats,
             @Param("carPrice") BigDecimal carPrice
     );
+
+    boolean existsByRegistrationNumber(String registrationNumber);
 }

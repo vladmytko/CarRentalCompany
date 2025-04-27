@@ -3,7 +3,9 @@ package com.vladyslav.CarRentalCopmany.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,6 +17,8 @@ public class BookingDTO {
     private Integer numOfAdults;
     private Integer numOfChildren;
     private Integer totalNumberOfPeople;
+    private BigDecimal totalPrice;
+
     private UserDTO user;
     private CarDTO car;
     private VanDTO van;
@@ -92,5 +96,13 @@ public class BookingDTO {
 
     public void setVan(VanDTO van) {
         this.van = van;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
