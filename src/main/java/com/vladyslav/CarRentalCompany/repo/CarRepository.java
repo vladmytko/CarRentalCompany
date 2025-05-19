@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
@@ -61,11 +62,10 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     List<Car> searchCar(
             @Param("checkInDate") LocalDate checkInDate,
             @Param("checkOutDate") LocalDate checkOutDate,
-            @Param("make") String make,
-            @Param("model") String model,
-            @Param("carType") String carType,
-            @Param("numberOfSeats") Integer numberOfSeats,
-            @Param("carPrice") BigDecimal carPrice
+            @Param("pickupLocation") String pickupLocation,
+            @Param("returnLocation") String returnLocation,
+            @Param("pickupTime") LocalTime pickupTime,
+            @Param("returnTime") LocalTime returnTime
     );
 
     boolean existsByRegistrationNumber(String registrationNumber);

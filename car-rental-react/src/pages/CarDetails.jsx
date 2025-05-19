@@ -60,7 +60,7 @@ const CarDetails = () => {
                 </div>
 
                 <p className="section__description">
-                  {car?.model}
+                  {car?.carType}
                 </p>
 
                 <div

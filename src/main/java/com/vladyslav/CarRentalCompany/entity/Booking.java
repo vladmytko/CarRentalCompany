@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 @Data
@@ -25,6 +26,18 @@ public class Booking {
 
     @Future(message = "check out date must be after check in date")
     private LocalDate checkOutDate;
+
+    @NotNull(message = "pickup location date is required")
+    private String pickupLocation;
+
+    @NotNull(message = "Return location date is required")
+    private String returnLocation;
+
+    @NotNull(message = "pickup time is required")
+    private java.time.LocalTime pickupTime;
+
+    @NotNull(message = "return time is required")
+    private java.time.LocalTime returnTime;
 
     @Min(value = 1, message = "Number of adults must not be less that 1")
     private Integer numOfAdults;
@@ -50,6 +63,47 @@ public class Booking {
 
     // GETTERS AND SETTERS
 
+
+    public @NotNull(message = "pickup location date is required") String getPickupLocation() {
+        return pickupLocation;
+    }
+
+
+    public void setPickupLocation(@NotNull(message = "pickup location date is required") String pickupLocation) {
+        this.pickupLocation = pickupLocation;
+    }
+
+    public @NotNull(message = "Return location date is required") String getReturnLocation() {
+        return returnLocation;
+    }
+
+    public void setReturnLocation(@NotNull(message = "Return location date is required") String returnLocation) {
+        this.returnLocation = returnLocation;
+    }
+
+    public LocalTime getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(LocalTime pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
+    public LocalTime getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(LocalTime returnTime) {
+        this.returnTime = returnTime;
+    }
+
+    public void setTotalNumOfPeople(@Min(value = 1, message = "Number of total people in a car must not be less that 1") Integer totalNumOfPeople) {
+        this.totalNumOfPeople = totalNumOfPeople;
+    }
+
+    public void setTotalPrice(@Min(value = 0, message = "Number of total price must not be less that 0") BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public Long getId() {
         return id;

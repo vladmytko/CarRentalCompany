@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -13,6 +14,10 @@ public class BookingDTO {
     private String confirmationCode;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
+    private String pickupLocation;
+    private String returnLocation;
+    private LocalTime pickupTime;
+    private LocalTime returnTime;
     private Integer numOfAdults;
     private Integer numOfChildren;
     private Integer totalNumberOfPeople;

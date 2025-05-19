@@ -2,7 +2,7 @@ package com.vladyslav.CarRentalCompany.service.impl;
 
 import com.vladyslav.CarRentalCompany.dto.CarDTO;
 import com.vladyslav.CarRentalCompany.dto.requests.CarCreationRequest;
-import com.vladyslav.CarRentalCompany.dto.requests.CarSearchCriteriaRequest;
+import com.vladyslav.CarRentalCompany.dto.requests.CarSearchRequest;
 import com.vladyslav.CarRentalCompany.dto.requests.CarUpdateRequest;
 import com.vladyslav.CarRentalCompany.dto.response.Response;
 import com.vladyslav.CarRentalCompany.entity.Car;
@@ -312,28 +312,28 @@ public class CarService implements ICarService {
 
 
     @Override
-    public Response searchCarAdmin(CarSearchCriteriaRequest request) {
+    public Response searchCarAdmin(CarSearchRequest request) {
 
         Response response = new Response();
 
         try{
-            List<Car> carList = carRepository.searchCarAdmin(
-                    request.getCheckInDate(),
-                    request.getCheckOutDate(),
-                    request.getMake(),
-                    request.getModel(),
-                    request.getCarType(),
-                    request.getNumberOfSeats(),
-                    request.getCarPrice(),
-                    request.getStatus()
-            );
 
-            List<CarDTO> carDTOList = Utils.mapCarListEntityToCarListDTO(carList);
-
-            // Set success response
-            response.setStatusCode(200);
+//            List<Car> carList = carRepository.searchCarAdmin(
+//                    request.getCheckInDate(),
+//                    request.getCheckOutDate(),
+//                    request.getMake(),
+//                    request.getModel(),
+//                    request.getCarType(),
+//                    request.getNumberOfSeats(),
+//                    request.getCarPrice(),
+//                    request.getStatus()
+//            );
+//            List<CarDTO> carDTOList = Utils.mapCarListEntityToCarListDTO(carList);
+//
+//            // Set success response
+//            response.setStatusCode(200);
             response.setMessage("Information retrieved successfully");
-            response.setCarList(carDTOList);
+            //response.setCarList(carDTOList);
 
         } catch (OurException e) {
 
@@ -351,18 +351,17 @@ public class CarService implements ICarService {
     }
 
     @Override
-    public Response searchCarUser(CarSearchCriteriaRequest request) {
+    public Response searchCarUser(CarSearchRequest request) {
         Response response = new Response();
 
         try{
             List<Car> carList = carRepository.searchCar(
                     request.getCheckInDate(),
                     request.getCheckOutDate(),
-                    request.getMake(),
-                    request.getModel(),
-                    request.getCarType(),
-                    request.getNumberOfSeats(),
-                    request.getCarPrice()
+                    request.getPickupLocation(),
+                    request.getReturnLocation(),
+                    request.getPickupTime(),
+                    request.getReturnTime()
             );
 
             List<CarDTO> carDTOList = Utils.mapCarListEntityToCarListDTO(carList);

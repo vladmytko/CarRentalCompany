@@ -2,7 +2,7 @@ package com.vladyslav.CarRentalCompany.service.interfac;
 
 import com.vladyslav.CarRentalCompany.dto.response.Response;
 import com.vladyslav.CarRentalCompany.dto.requests.CarCreationRequest;
-import com.vladyslav.CarRentalCompany.dto.requests.CarSearchCriteriaRequest;
+import com.vladyslav.CarRentalCompany.dto.requests.CarSearchRequest;
 import com.vladyslav.CarRentalCompany.dto.requests.CarUpdateRequest;
 import com.vladyslav.CarRentalCompany.entity.enums.CarType;
 
@@ -28,7 +28,7 @@ public interface ICarService {
 
     Response getAllCarsOnMaintenance();
 
-    Response searchCarAdmin(CarSearchCriteriaRequest request);
+    Response searchCarAdmin(CarSearchRequest request);
 
-    Response searchCarUser(CarSearchCriteriaRequest request);
+    Response searchCarUser(CarSearchRequest request);
 }

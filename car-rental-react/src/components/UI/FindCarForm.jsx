@@ -8,30 +8,43 @@ const FindCarForm = () => {
     <Form className="form">
       <div className=" d-flex align-items-center justify-content-between flex-wrap">
         <FormGroup className="form__group">
-          <input type="text" placeholder="From address" required />
+          <h5 className="text-dark ms-1">Pickup location</h5>
+          <input type="text" placeholder="Stansted Airport" required />
         </FormGroup>
 
         <FormGroup className="form__group">
-          <input type="text" placeholder="To address" required />
+          <h5 className="text-dark ms-1">Pickup date</h5>
+          <input type="date" placeholder="Pickup date" required />
         </FormGroup>
 
         <FormGroup className="form__group">
-          <input type="date" placeholder="Journey date" required />
-        </FormGroup>
-
-        <FormGroup className="form__group">
+          <h5 className="text-dark ms-1">Pickup time</h5>
           <input
             className="journey__time"
             type="time"
-            placeholder="Journey time"
+            placeholder="Pickup time"
             required
           />
         </FormGroup>
-        <FormGroup className="select__group">
-          <select>
-            <option value="ac">AC Car</option>
-            <option value="non-ac">Non AC Car</option>
-          </select>
+
+        <FormGroup className="form__group">
+          <h5 className="text-dark ms-1">Return location</h5>
+          <input type="text" placeholder="Stansted Airport" required />
+        </FormGroup>
+
+         <FormGroup className="form__group">
+          <h5 className="text-dark ms-1">Return date</h5>
+          <input type="date" placeholder="Return date" required />
+        </FormGroup>
+
+        <FormGroup className="form__group">
+          <h5 className="text-dark ms-1">Return time</h5>
+          <input
+            className="journey__time"
+            type="time"
+            placeholder="Return time"
+            required
+          />
         </FormGroup>
 
         <FormGroup className="form__group">

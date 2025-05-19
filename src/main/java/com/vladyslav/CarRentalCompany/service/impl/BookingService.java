@@ -55,6 +55,8 @@ public class BookingService implements IBookingService {
             bookingRequest.setTotalNumOfPeople();
             bookingRequest.setTotalPrice();
 
+
+
             Integer totalNumberOfPeople = bookingRequest.getTotalNumOfPeople();
 
             if(totalNumberOfPeople > car.getNumberOfSeats()){

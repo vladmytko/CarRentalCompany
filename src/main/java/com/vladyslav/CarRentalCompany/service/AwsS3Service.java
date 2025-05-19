@@ -2,6 +2,7 @@ package com.vladyslav.CarRentalCompany.service;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -20,14 +21,6 @@ import java.util.UUID;
 @Service
 public class AwsS3Service {
     private final String bucketName = "mutko95-hotel-images";
-
-    // Inject the AWS access key from application properties
-    @Value("${aws.s3.access.key}")
-    private String awsS3AccessKey;
-
-    // Inject the AWS secret key from application properties
-    @Value("${aws.s3.secret.key}")
-    private String awsS3SecretKey;
 
     // Improvement: AWS credentials should be stored in environment variables or a credentials file.
 
@@ -79,9 +72,8 @@ public class AwsS3Service {
 
     // Secure AWS S3 Client creation
     private AmazonS3 createS3Client() {
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(awsS3AccessKey, awsS3SecretKey);
         return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .withRegion(Regions.EU_NORTH_1)
                 .build();
     }

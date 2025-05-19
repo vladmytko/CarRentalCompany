@@ -71,13 +71,9 @@ const CarItem = () => {
                   <Link to={`/cars/${carId}`}>Rent</Link>
                 </button>
       
-                {/* <button className=" w-50 car__item-btn car__btn-details">
+                <button className=" w-50 car__item-btn car__btn-details">
                   <Link to={`/cars/${carId}`}>Details</Link>
-                </button> */}
-
-                <Link to={`/cars/${carId}`} className="w-50 car__item-btn car__btn-rent">
-                  Rent
-                </Link>
+                </button>
                 
               </div>
             </div>
